@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 280 100% 98%;
+    --foreground: 280 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 280 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 280 10% 10%;
+    --primary: 280 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 180 100% 50%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 280 20% 96%;
+    --muted-foreground: 280 10% 45%;
+    --accent: 60 100% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 280 20% 88%;
+    --input: 280 20% 88%;
+    --ring: 280 100% 50%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 280 50% 5%;
+    --foreground: 280 10% 98%;
+    --card: 280 50% 10%;
+    --card-foreground: 280 10% 98%;
+    --popover: 280 50% 10%;
+    --popover-foreground: 280 10% 98%;
+    --primary: 280 100% 60%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 180 100% 60%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 280 50% 15%;
+    --muted-foreground: 280 10% 75%;
+    --accent: 60 100% 60%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 280 10% 98%;
+    --border: 280 50% 20%;
+    --input: 280 50% 20%;
+    --ring: 280 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--primary) / 0.1) 50%,
+      hsl(var(--secondary) / 0.1) 100%
+    );
+    min-height: 100vh;
+  }
+}
+
+.storybook-container {
+  perspective: 1000px;
+}
+
+.storybook {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.storybook.open {
+  transform: rotateY(-180deg);
+}
+
+.page {
+  backface-visibility: hidden;
+}
+
+.page.back {
+  transform: rotateY(180deg);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
