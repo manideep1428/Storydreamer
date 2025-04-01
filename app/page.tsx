@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Wand2, BookOpen, Volume2, Stars, Moon } from "lucide-react";
 import { audioPlayer } from "@/app/utils/audio";
+import axios from "axios"
 
 export default function Home() {
   const [story, setStory] = useState("");
@@ -22,76 +23,17 @@ export default function Home() {
       setError("");
       setIsGenerating(true);
       
-      // Call the Gemini API through our API route
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          characterName,
-          setting,
-        }),
+      const response = await axios.post("/api/groq", {
+        characterName,
+        setting
       });
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to generate story");
-      }
-      
-      const data = await response.json();
-      setStory(data.story);
+      setStory(response.data.story);
     } catch (err) {
       console.error("Error generating story:", err);
       setError(err instanceof Error ? err.message : "Failed to generate story");
     } finally {
       setIsGenerating(false);
-    }
-  };
-
-  const playStory = async () => {
-    try {
-      setError("");
-      setIsPlaying(true);
-      
-      // Call the Text-to-Speech API through our API route
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: story,
-          voice: {
-            languageCode: "en-US",
-            ssmlGender: "NEUTRAL",
-          },
-          audioConfig: {
-            audioEncoding: "MP3",
-            pitch: 0,
-            speakingRate: 0.9, // Slightly slower for bedtime stories
-          },
-        }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to synthesize speech");
-      }
-      
-      const data = await response.json();
-      
-      // Play the audio
-      if (audioPlayer) {
-        await audioPlayer.play(data.audioContent);
-      } else {
-        throw new Error("Audio player not available");
-      }
-    } catch (err) {
-      console.error("Error playing story:", err);
-      setError(err instanceof Error ? err.message : "Failed to play story");
-    } finally {
-      setIsPlaying(false);
     }
   };
 
@@ -171,7 +113,7 @@ export default function Home() {
                       <Button
                         onClick={(e) => {
                           e.stopPropagation();
-                          playStory();
+                          // playStory();
                         }}
                         variant="secondary"
                         className="w-full"
