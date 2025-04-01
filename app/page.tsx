@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Wand2, BookOpen, Volume2, Stars, Moon } from "lucide-react";
-import { audioPlayer } from "@/app/utils/audio";
 import axios from "axios"
 
 export default function Home() {
